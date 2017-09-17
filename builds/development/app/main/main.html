@@ -1,0 +1,18 @@
+<h1>Vacation Calendar</h1>
+
+<ul class="nav nav-tabs">
+    <li ng-class="{'active':mainCtrl.activeTab === mainCtrl.tabs.employees}">
+        <a ng-click="mainCtrl.setActiveTab(mainCtrl.tabs.employees)">Employees</a>
+    </li>
+    <li ng-class="{'active':mainCtrl.activeTab === mainCtrl.tabs.vacations}">
+        <a ng-click="mainCtrl.setActiveTab(mainCtrl.tabs.vacations)">Vacations</a>
+    </li>
+</ul>
+
+<ng-include src="'app/components/employees/employeesTab.html'"
+            data-ng-if="mainCtrl.activeTab === mainCtrl.tabs.employees">
+</ng-include>
+
+<ng-include src="'app/components/vacations/vacationsTab.html'"
+            data-ng-if="mainCtrl.activeTab === mainCtrl.tabs.vacations">
+</ng-include>

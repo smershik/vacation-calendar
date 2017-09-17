@@ -1,0 +1,62 @@
+<div ng-controller="employeesCtrl as ctrl">
+    <form name="employeeForm" class="add-form row">
+        <label class="col-md-4 col-sm-12 col-xs-12" for="surname">
+            <span>Surname</span>
+            <input id="surname"
+                   type="text"
+                   ng-model="ctrl.surname">
+        </label>
+        <label class="col-md-4 col-sm-12 col-xs-12" for="name">
+            <span>Name</span>
+            <input id="name"
+                   type="text"
+                   ng-model="ctrl.name">
+        </label>
+        <label class="col-md-4 col-sm-12 col-xs-12" for="position">
+           <span>Position</span>
+            <select ng-init="ctrl.position = ctrl.employeesPositions[0]"
+                    id="position"
+                    ng-model="ctrl.position"
+                    ng-options="position for position in ctrl.employeesPositions">>
+            </select>
+        </label>
+        <span ng-if="ctrl.createError" class="col-sm-12 col-xs-12 alert-danger">{{ctrl.createError}}</span>
+        <button class="col-md-12 col-sm-12 col-xs-12" ng-click="ctrl.addNewEmployee()">Add</button>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Position</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in ctrl.employees" ng-include="ctrl.getRowTemplate(employee)">
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/ng-template" id="displayEmployee">
+    <td>{{employee.name}}</td>
+    <td>{{employee.surname}}</td>
+    <td>{{employee.position}}</td>
+    <td>
+        <button ng-click="ctrl.editEmployee(employee)">Edit</button>
+        <button ng-click="ctrl.deleteEmployee(employee.id)">Delete</button>
+    </td>
+</script>
+<script type="text/ng-template" id="editEmployee">
+    <td><input type="text" ng-model="ctrl.selected.name" /></td>
+    <td><input type="text" ng-model="ctrl.selected.surname" /></td>
+    <td><select ng-init="ctrl.position = ctrl.selected.position"
+                 ng-model="ctrl.selected.position"
+                 ng-options="position for position in ctrl.employeesPositions">>
+    </select></td>
+    <td>
+        <button ng-click="ctrl.saveEmployee()">Save</button>
+        <button ng-click="ctrl.resetUpdateForm()">Cancel</button>
+    </td>
+    <span ng-if="ctrl.updateError" class="col-sm-12 col-xs-12 alert-danger">{{ctrl.updateError}}</span>
+</script>

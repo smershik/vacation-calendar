@@ -1,0 +1,59 @@
+// All Our Dependencies
+@import "../libs/bootstrap/css/bootstrap.css";
+@import "../libs/bootstrap-material-design/css/roboto.css";
+@import "../libs/bootstrap-material-design/css/material-fullpalette.css";
+@import "../libs/bootstrap-material-design/css/ripples.css";
+//=== === ===
+// Our SASS Files
+@import "includes/varibles";
+@import "includes/mixins";
+@import "includes/stack";
+// Some Styles...
+body {
+  width: 100%;
+  height: 100%;
+  font-size: $font-size-base;
+}
+
+
+
+.nav-tabs {
+  &>li{
+    &>a{
+      cursor: pointer;
+    }
+    &.active{
+      background-color: grey;
+    }
+  }
+}
+
+.add-form{
+  margin: 30px 0;
+  &>label>select{
+    width: 186.4px;
+    height: 30px;
+  }
+  @include media(tablet, general){
+    &>label>span{
+      display: inline-block;
+      min-width: 70px;
+    }
+  }
+}
+
+.blue{
+  background-color: #1fb9ff;
+}
+
+tr{
+  &.present{
+    background-color: #00a946;
+  }
+  &.past{
+    background-color: #1d288f;
+  }
+  &.future{
+    background-color: #00e5ff;
+  }
+}

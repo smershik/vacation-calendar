@@ -1,0 +1,105 @@
+<div ng-controller="vacationsCtrl as ctrl">
+    <form name="vacationForm" class="add-form row">
+        <label class="col-md-4 col-sm-12 col-xs-12" for="employee">
+            <span>Employee</span>
+            <select id="employee"
+                    ng-model="ctrl.vacationToCreate.employeeId">
+                <option ng-repeat="employee in ctrl.employees" value="{{employee.id}}">{{employee.surname}}</option>
+            </select>
+        </label>
+        <label class="col-md-4 col-sm-12 col-xs-12" for="dateFrom">
+            <span>Date from</span>
+            <input id="dateFrom"
+                   moment-picker
+                   ng-model="ctrl.vacationToCreate.dateFrom"
+                   format="YYYY-MM-DD"
+                   min-date="ctrl.getMinDateFrom(ctrl.vacationToCreate.employeeId)">
+            </input>
+        </label>
+        <label class="col-md-4 col-sm-12 col-xs-12" for="dateTo">
+            <span>Date To</span>
+            <input id="dateTo"
+                   moment-picker
+                   ng-model="ctrl.vacationToCreate.dateTo"
+                   format="YYYY-MM-DD"
+                   ng-disabled="ctrl.isDateToDisabled()"
+                   min-date="ctrl.minDateToCreate"
+                   max-date="ctrl.maxDateToCreate">
+            </input>
+        </label>
+        <span ng-if="ctrl.createError" class="col-sm-12 col-xs-12 alert-danger">{{ctrl.createError}}</span>
+        <button class="col-md-12 col-sm-12 col-xs-12" ng-click="ctrl.addNewVacation()">Add</button>
+    </form>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                <a ng-click="ctrl.orderByField='surname'; ctrl.reverseSort = !ctrl.reverseSort">
+                    Surname
+                    <span ng-show="ctrl.orderByField == 'surname'">
+                        <span ng-show="!ctrl.reverseSort">^</span>
+                        <span ng-show="ctrl.reverseSort">v</span>
+                    </span>
+                </a>
+            </th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>
+                <a ng-click="ctrl.orderByField='dateFrom'; ctrl.reverseSort = !ctrl.reverseSort">
+                    Date From
+                    <span ng-show="ctrl.orderByField == 'dateFrom'">
+                        <span ng-show="!ctrl.reverseSort">^</span>
+                        <span ng-show="ctrl.reverseSort">v</span>
+                    </span>
+                </a>
+            </th>
+            <th>Date To</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="vacation in ctrl.vacations  | orderBy:ctrl.orderByField:ctrl.reverseSort"
+            ng-include="ctrl.getRowTemplate(vacation)"
+            class="{{ctrl.getClassForRow(vacation)}}">
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/ng-template" id="displayVacation">
+    <td>{{ctrl.getEmployeeById(vacation.employeeId).surname}}</td>
+    <td>{{ctrl.getEmployeeById(vacation.employeeId).name}}</td>
+    <td>{{ctrl.getEmployeeById(vacation.employeeId).position}}</td>
+    <td>{{vacation.dateFrom | dateFilter}}</td>
+    <td>{{vacation.dateTo | dateFilter}}</td>
+    <td>
+        <button ng-click="ctrl.editVacation(vacation)">Edit</button>
+        <button ng-click="ctrl.deleteVacation(vacation.id)">Delete</button>
+    </td>
+</script>
+<script type="text/ng-template" id="editVacation">
+    <td>{{ctrl.getEmployeeById(vacation.employeeId).surname}}</td>
+    <td>{{ctrl.getEmployeeById(vacation.employeeId).name}}</td>
+    <td>{{ctrl.getEmployeeById(vacation.employeeId).position}}</td>
+    <td>
+        <input moment-picker
+               ng-model="ctrl.selected.dateFrom"
+               format="YYYY-MM-DD"
+               min-date="ctrl.getMinDateFrom(ctrl.selected.employeeId)">
+        </input>
+    </td>
+    <td>
+        <input moment-picker
+               ng-model="ctrl.selected.dateTo"
+               format="YYYY-MM-DD"
+               min-date="ctrl.minDateToUpdate"
+               max-date="ctrl.maxDateToUpdate">
+        </input>
+    </td>
+    <td>
+        <button ng-click="ctrl.saveVacation()">Save</button>
+        <button ng-click="ctrl.resetVacationToEdit()">Cancel</button>
+    </td>
+    <span ng-if="ctrl.updateError" class="col-sm-12 col-xs-12 alert-danger">{{ctrl.updateError}}</span>
+</script>
